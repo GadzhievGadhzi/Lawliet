@@ -1,9 +1,7 @@
 ﻿using Lawliet.Models;
 using Lawliet.Services;
-using Microsoft.Extensions.Caching.Memory;
 
-namespace Lawliet.Middleware
-{
+namespace Lawliet.Middleware {
     public class AuthValidationMiddleware {
         private readonly RequestDelegate _next;
 

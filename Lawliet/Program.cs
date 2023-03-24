@@ -6,8 +6,7 @@ using Lawliet.Data;
 using Microsoft.EntityFrameworkCore;
 using Lawliet.Services;
 
-namespace Lawliet
-{
+namespace Lawliet {
     public class Program {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
