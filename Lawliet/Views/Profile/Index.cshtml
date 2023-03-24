@@ -1,0 +1,19 @@
+﻿@    using Lawliet.Data;
+@    using Microsoft.Extensions.Caching.Memory;
+    using Lawliet.Services;
+
+@if (!Context.User.Identity.IsAuthenticated) {
+    Context.Response.Redirect($"/auth/login/");
+}
+
+@*<a href='javascript: history.length > 1 ? history.go(-1): null'>Return to client detail</a>*@
+
+@{
+    var cache = Context.RequestServices.GetService<CachingService>();
+    var id = Context.Request.Cookies["id"];
+    if (!string.IsNullOrEmpty(id)) {
+        var user = await cache.GetObjectFromCache<User>(id);
+        <p>@user.Name</p>
+    }
+}
+<p>Profile</p>
