@@ -11,7 +11,6 @@ namespace Lawliet {
         public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllersWithViews();
-
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
             builder.Services.AddTransient<CachingService>();
@@ -48,7 +47,6 @@ namespace Lawliet {
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.UseMiddleware<AuthValidationMiddleware>();
-            app.UseMiddleware<StatefulÌiddleware>();
             app.Run();
         }
     }

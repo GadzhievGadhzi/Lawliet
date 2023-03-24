@@ -1,12 +1,10 @@
-﻿@    using Lawliet.Data;
-@    using Microsoft.Extensions.Caching.Memory;
-    using Lawliet.Services;
+﻿@using Lawliet.Data;
+@using Microsoft.Extensions.Caching.Memory;
+@using Lawliet.Services;
 
 @if (!Context.User.Identity.IsAuthenticated) {
     Context.Response.Redirect($"/auth/login/");
 }
-
-@*<a href='javascript: history.length > 1 ? history.go(-1): null'>Return to client detail</a>*@
 
 @{
     var cache = Context.RequestServices.GetService<CachingService>();

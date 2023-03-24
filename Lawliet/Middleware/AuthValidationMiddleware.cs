@@ -4,7 +4,6 @@ using Lawliet.Services;
 namespace Lawliet.Middleware {
     public class AuthValidationMiddleware {
         private readonly RequestDelegate _next;
-
         public AuthValidationMiddleware(RequestDelegate next) {
             _next = next;
         }

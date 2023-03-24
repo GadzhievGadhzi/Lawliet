@@ -11,6 +11,13 @@
             var controller = routeValues["controller"];
             var action = routeValues["action"];
 
+            /*if (!context.Request.Cookies.ContainsKey("currentPage")) {
+                context.Response.Cookies.Append("currentPage", $"{controller}/{action}");
+            } else {
+                context.Response.Cookies.Append("previousPage", context.Request.Cookies["currentPage"]);
+                context.Response.Cookies.Delete("currentPage");
+            }*/
+
             await _next.Invoke(context);
         }
     }

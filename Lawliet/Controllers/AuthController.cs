@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Lawliet.Models;
 using Lawliet.Services;
 
-namespace Lawliet.Controllers
-{
+namespace Lawliet.Controllers {
     public class AuthController : Controller {
         private readonly CachingService _cachingService;
 
