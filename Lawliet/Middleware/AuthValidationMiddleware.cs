@@ -4,7 +4,6 @@ using Lawliet.Services;
 namespace Lawliet.Middleware {
     public class AuthValidationMiddleware {
         private readonly RequestDelegate _next;
-
         public AuthValidationMiddleware(RequestDelegate next) {
             _next = next;
         }
@@ -17,7 +16,7 @@ namespace Lawliet.Middleware {
             }
 
             CachingService cachingService = context.RequestServices.GetService<CachingService>()!;
-            var user = await cachingService.GetObjectFromCache<User>(id);
+            var user = cachingService.GetObjectFromCache<User>(id);
             if (user == null) {
                 context.Response.Redirect("/auth/login/");
             }

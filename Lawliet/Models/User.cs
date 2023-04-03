@@ -4,15 +4,26 @@ namespace Lawliet.Models {
     public class User : IDataModel {
         public string Id { get; set; }
         public string? Name { get; set; }
+        public int Age { get; set; }
+        public Gender Gender { get; set; }
+        public Status Status { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string? Email { get; set; }
         public string? PictureUrl { get; set; }
+        public List<LessonTopic> Topics { get; set; }
 
-        public User() { }
-        public User(string id, string? name, string? email, string? pictureUrl) {
-            Id = id;
-            Name = name;
-            Email = email;
-            PictureUrl = pictureUrl;
+        public User() {
+            Topics = new List<LessonTopic>();
         }
+    }
+
+    public enum Gender {
+        Man,
+        Woman
+    }
+
+    public enum Status {
+        Teacher,
+        Student
     }
 }

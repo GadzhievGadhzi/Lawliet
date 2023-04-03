@@ -21,10 +21,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная страница</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Профиль</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contacts">Контакты</a>
                         </li>
 
                         @if (Context.User.Identity.IsAuthenticated) {
@@ -58,9 +61,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
-<style>
-    img {
-        border-radius: 50%;
-    }
-</style>

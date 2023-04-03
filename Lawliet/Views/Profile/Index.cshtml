@@ -1,19 +1,79 @@
-﻿@    using Lawliet.Data;
-@    using Microsoft.Extensions.Caching.Memory;
-    using Lawliet.Services;
-
-@if (!Context.User.Identity.IsAuthenticated) {
-    Context.Response.Redirect($"/auth/login/");
-}
-
-@*<a href='javascript: history.length > 1 ? history.go(-1): null'>Return to client detail</a>*@
+﻿@using Lawliet.Data;
+@using Microsoft.Extensions.Caching.Memory;
+@using Lawliet.Services;
+@model User;
 
 @{
-    var cache = Context.RequestServices.GetService<CachingService>();
-    var id = Context.Request.Cookies["id"];
-    if (!string.IsNullOrEmpty(id)) {
-        var user = await cache.GetObjectFromCache<User>(id);
-        <p>@user.Name</p>
+    if (!Context.User.Identity.IsAuthenticated || Model == null) {
+        Context.Response.Redirect($"/auth/login/");
+        return;
     }
+
+    var user = Model;
+    var topics = user.Topics;
 }
-<p>Profile</p>
+
+<section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-9 col-xl-7">
+                <div class="card">
+                    <div class="rounded-top text-white d-flex flex-row" style="background-color: #55595c; height:200px;">
+                        <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                            <img src="@user.PictureUrl" alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2" style="width: 150px; z-index: 1">
+                            <button type="button" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">Ред. профиль</button>
+                        </div>
+                        <div class="ms-3" style="margin-top: 130px;">
+                            <h5>@user.Name</h5>
+                            <p>Статус: @((user.Status == Status.Teacher) ? "Учитель" : "Ученик")</p>
+                        </div>
+                    </div>
+                    <div class="p-4 text-black" style="background-color: #f8f9fa;">
+                        <div class="d-flex justify-content-end text-center py-1">
+                            <div>
+                                <p class="mb-1 h5">@topics.Count()</p>
+                                <p class="small text-muted mb-0">Темы</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4 text-black">
+                        <div class="mb-5">
+                            <p class="lead fw-normal mb-1">О учителе</p>
+                            <div class="p-4" style="background-color: #f8f9fa;">
+                                <p>Э́ймос Бро́нсон О́лкотт, часто его имя транскрибируют как Амос — педагог, философ, поэт, эссеист. Родился в бедной фермерской семье. Образование получил как самоучка. Стал рано зарабатывать на жизнь, работая в качестве бродячего торговца в южных штатах.</p>
+                            </div>
+                        </div>
+
+                        <div class="row g-2">
+                            @{
+                                if (topics.Count() > 0) {
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <p class="lead fw-normal mb-0">Последние опубликованные темы</p>
+                                    </div>
+
+                                    foreach (var topic in topics.Take(4)) {
+                                        <div class="col-md-6">
+                                            <div class="card mb-6 box-shadow">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@topic.ShortTitle</h5>
+                                                    <p class="card-text">@((topic.Description!.Length <= 70) ? string.Join("", topic.Description!.Take(70)) : string.Join("", topic.Description!.Take(70)) + "...")</p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="btn-group">
+                                                            <a href="@topic.Url"><button type="button" class="btn btn-sm btn-outline-secondary">Читать</button></a>
+                                                            <button type="button" class="btn btn-sm btn-outline-secondary">Изменить</button>
+                                                        </div>
+                                                        <small class="text-muted">@topic.DateCreation.ToShortDateString()</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
