@@ -42,6 +42,9 @@ namespace Lawliet {
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+
+            app.UseMiddleware<StatefulÌiddleware>();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
