@@ -32,11 +32,11 @@
 
                         @if (Context.User.Identity.IsAuthenticated) {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Выйти</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">-> Выйти</a>
                             </li>
                         } else {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">Войти</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Login">-> Войти</a>
                             </li>
                         }
                     </ul>

@@ -1,4 +1,6 @@
 ﻿using Lawliet.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace Lawliet.Models {
     public class User : IDataModel {
@@ -6,7 +8,8 @@ namespace Lawliet.Models {
         public string? Name { get; set; }
         public int Age { get; set; }
         public Gender Gender { get; set; }
-        public Status Status { get; set; }
+        public string? AboutMe { get; set; }
+        public string? Status { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string? Email { get; set; }
         public string? PictureUrl { get; set; }
@@ -23,7 +26,7 @@ namespace Lawliet.Models {
     }
 
     public enum Status {
-        Teacher,
-        Student
+        Teacher = 0,
+        Student = 1
     }
 }

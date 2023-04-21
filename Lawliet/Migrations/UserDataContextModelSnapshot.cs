@@ -42,15 +42,13 @@ namespace Lawliet.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserId1")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("LessonTopics");
                 });
@@ -58,6 +56,9 @@ namespace Lawliet.Migrations
             modelBuilder.Entity("Lawliet.Models.User", b =>
                 {
                     b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AboutMe")
                         .HasColumnType("text");
 
                     b.Property<int>("Age")
@@ -78,8 +79,8 @@ namespace Lawliet.Migrations
                     b.Property<string>("PictureUrl")
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -90,7 +91,9 @@ namespace Lawliet.Migrations
                 {
                     b.HasOne("Lawliet.Models.User", "User")
                         .WithMany("Topics")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

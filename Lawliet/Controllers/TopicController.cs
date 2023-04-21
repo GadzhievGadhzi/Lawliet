@@ -1,0 +1,47 @@
+﻿using Lawliet.Data;
+using Lawliet.Models;
+using Lawliet.Services;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Lawliet.Controllers {
+    public class TopicController : Controller {
+        private readonly CachingService _cachingService;
+        private readonly UserDataContext _context;
+        public TopicController(UserDataContext context, CachingService cachingService) {
+            _cachingService = cachingService;
+            _context = context;
+        }
+
+        public IActionResult Remove(string id) {
+            DataRepository<LessonTopic> repository = new DataRepository<LessonTopic>(_context);
+            repository.Remove(_cachingService.GetObjectFromCache<LessonTopic>(id));
+            _cachingService.RemoveObjectFromCache(id);
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult Add() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Add(LessonTopic topic) {
+            topic.Id = new Random().Next(10000, 100000).ToString();
+            topic.UserId = HttpContext.Request.Cookies["id"].ToString();
+            await _cachingService.AddObjectFromCache(topic);
+            return View();
+        }
+
+        [HttpGet] 
+        public IActionResult Edit(string id) {
+            ViewBag.TopicId = id;
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Edit(LessonTopic topic) {
+            _cachingService.UpdateObject<LessonTopic>(topic);
+            _cachingService.RemoveObjectFromCache(topic.Id);
+            await _cachingService.AddObjectFromCache(topic);
+            return RedirectToAction("Index", "Home");
+        }
+    }
+}
