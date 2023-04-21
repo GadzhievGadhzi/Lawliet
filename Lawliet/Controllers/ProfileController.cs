@@ -23,7 +23,7 @@ namespace Lawliet.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(User user) {
             DataRepository<User> repository = new DataRepository<User>(_context);
-            User _user = repository.Get(x => x.Id == user.Id).First();
+            User _user = repository.GetWithInclude(x => x.Id == user.Id, z => z.Topics).First();
 
             repository.Remove(_user);
 

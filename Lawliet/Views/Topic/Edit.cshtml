@@ -1,6 +1,8 @@
-﻿@using Lawliet.Services;
+﻿@model TopicId;
+@using Lawliet.Controllers;
+@using Lawliet.Services;
 @{
-    var topicId = ViewBag.TopicId;
+    var topicId = Model.Id;
     var cache = Context.RequestServices.GetService<CachingService>();
     LessonTopic topic = cache.GetObjectFromCache<LessonTopic>(topicId);
 }
@@ -8,7 +10,7 @@
     <form action="" method="post">
         <div class="form-group" hidden="hidden">
             <label>Короткое название</label>
-            <input type="text" class="form-control" name="Id" value="@topic.Id">
+            <input type="text" class="form-control" name="Id" value="@topicId">
         </div>
         <div class="form-group">
             <label>Короткое название</label>
@@ -29,7 +31,7 @@
         <br />
         <button type="submit" class="btn btn-primary">Изменить</button>
         <br /><br />
-        <a href="/Topic/Remove?id=@topic.Id"><button type="button" class="btn btn-danger">Удалить</button></a>
+        <a href="/Topic/Remove?id=@topicId"><button type="button" class="btn btn-danger">Удалить</button></a>
     </form>
 </center>
 
