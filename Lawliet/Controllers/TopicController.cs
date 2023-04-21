@@ -4,6 +4,9 @@ using Lawliet.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Lawliet.Controllers {
+
+    public record class TopicId(string Id);
+
     public class TopicController : Controller {
         private readonly CachingService _cachingService;
         private readonly UserDataContext _context;
@@ -32,12 +35,12 @@ namespace Lawliet.Controllers {
 
         [HttpGet] 
         public IActionResult Edit(string id) {
-            ViewBag.TopicId = id;
-            return View();
+            return View(new TopicId(id));
         }
         
         [HttpPost]
         public async Task<IActionResult> Edit(LessonTopic topic) {
+            topic.UserId = _cachingService.GetObjectFromCache<LessonTopic>(topic.Id).UserId;
             _cachingService.UpdateObject<LessonTopic>(topic);
             _cachingService.RemoveObjectFromCache(topic.Id);
             await _cachingService.AddObjectFromCache(topic);
