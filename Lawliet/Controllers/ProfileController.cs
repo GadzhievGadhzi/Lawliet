@@ -14,6 +14,29 @@ namespace Lawliet.Controllers
             _cachingService = cachingService;
         }
 
+        [HttpGet]
+        public IActionResult Edit(string id) {
+            ViewBag.UserId = id;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(User user) {
+            DataRepository<User> repository = new DataRepository<User>(_context);
+            User _user = repository.Get(x => x.Id == user.Id).First();
+
+            repository.Remove(_user);
+
+            _user.AboutMe = user.AboutMe;
+            _user.Email = user.Email;
+            _user.Status = user.Status;
+            _user.Name = user.Name;
+            _user.AboutMe = user.AboutMe;
+
+            await repository.CreateAsync(_user);
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Index() {
             DataRepository<User> repository = new DataRepository<User>(_context);
             var user = repository.GetWithInclude(x => x.Id == HttpContext.Request.Cookies["id"], z => z.Topics).ToList();

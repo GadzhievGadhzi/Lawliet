@@ -36,6 +36,14 @@ namespace Lawliet.Services {
             return user;
         }
 
+        public void UpdateObject<TEntity>(TEntity item) where TEntity : class, IDataModel {
+            DataRepository<TEntity> repository = new DataRepository<TEntity>(context);
+            repository.Update(item);
+
+            cache.Remove(item.Id);
+            AddObjectFromCache(item);
+        }
+
         public void RemoveObjectFromCache(string id) {
             cache.Remove(id);
         }

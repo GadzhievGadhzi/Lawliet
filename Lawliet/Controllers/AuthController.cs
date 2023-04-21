@@ -5,13 +5,18 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Lawliet.Models;
 using Lawliet.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Lawliet.Data;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Lawliet.Controllers {
     public class AuthController : Controller {
         private readonly CachingService _cachingService;
+        private readonly UserDataContext _context;
 
-        public AuthController(CachingService cachingService) {
+        public AuthController(CachingService cachingService, UserDataContext context) {
             _cachingService = cachingService;
+            _context = context;
         }
 
         public async Task Login() {
@@ -20,6 +25,7 @@ namespace Lawliet.Controllers {
             });
         }
 
+        [HttpGet]
         public async Task<IActionResult> LoggedIn() {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var claim = result?.Principal?.Identities?.FirstOrDefault()?.Claims.Select(claim => new {
@@ -74,11 +80,23 @@ namespace Lawliet.Controllers {
                 PictureUrl = "https://image.slidesharecdn.com/random-130127210417-phpapp01/75/-14-2048.jpg?cb=1669073551",
             });*/
 
+            var isUserInCache = _cachingService.GetObjectFromCache<User>(user.Id);
+            if (isUserInCache != null) {
+                HttpContext.Response.Cookies.Append("id", user.Id);
+                await _cachingService.AddObjectFromCache(user);
+                var previousPage = HttpContext.Request?.Cookies["previousPage"]?.Split('/');
+                return (previousPage == null) ? RedirectToAction("Index", "Home") : RedirectToAction(previousPage[1], previousPage[0]);
+            }
 
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoggedIn(User user) {
             HttpContext.Response.Cookies.Append("id", user.Id);
             await _cachingService.AddObjectFromCache(user);
             var previousPage = HttpContext.Request?.Cookies["previousPage"]?.Split('/');
-            return (previousPage == null) ? RedirectToAction("Index", "Home")  : RedirectToAction(previousPage[1], previousPage[0]);
+            return (previousPage == null) ? RedirectToAction("Index", "Home") : RedirectToAction(previousPage[1], previousPage[0]);
         }
 
         public async Task<IActionResult> Logout() {
