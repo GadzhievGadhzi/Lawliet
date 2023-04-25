@@ -14,14 +14,6 @@ namespace Lawliet {
             builder.Services.AddControllersWithViews();
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-            if (!builder.Environment.IsDevelopment()) {
-                builder.Services.AddHttpsRedirection(options =>
-                {
-                    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
-                    options.HttpsPort = 443;
-                });
-            }
-
             builder.Services.AddTransient<CachingService>();
             builder.Services.AddMemoryCache();
 
