@@ -43,7 +43,7 @@ namespace Lawliet {
             app.UseRouting();
             app.UseAuthorization();
 
-            app.UseMiddleware<StatefulÌiddleware>();
+            //app.UseMiddleware<StatefulÌiddleware>();
 
             app.MapControllerRoute(
                 name: "default",
