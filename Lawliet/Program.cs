@@ -5,6 +5,7 @@ using Lawliet.Middleware;
 using Lawliet.Data;
 using Microsoft.EntityFrameworkCore;
 using Lawliet.Services;
+using System.Net;
 
 namespace Lawliet {
     public class Program {
@@ -12,6 +13,14 @@ namespace Lawliet {
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllersWithViews();
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+            if (!builder.Environment.IsDevelopment()) {
+                builder.Services.AddHttpsRedirection(options =>
+                {
+                    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+                    options.HttpsPort = 443;
+                });
+            }
 
             builder.Services.AddTransient<CachingService>();
             builder.Services.AddMemoryCache();
