@@ -4,7 +4,7 @@
 @model User;
 
 @{
-    if (!Context.User.Identity.IsAuthenticated || Model == null) {
+    if (/*!Context.User.Identity.IsAuthenticated ||*/ Model == null) {
         Context.Response.Redirect($"/auth/login/");
         return;
     }
