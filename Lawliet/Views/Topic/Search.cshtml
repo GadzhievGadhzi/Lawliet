@@ -1,24 +1,27 @@
-﻿@using Lawliet.Data;
-@{
-    ViewData["Title"] = "Главная страница";
+﻿@model IEnumerable<LessonTopic>
 
-    var db = Context.RequestServices.GetService<UserDataContext>();
+@{
+    var topics = Model;
 }
 
-<div class="px-4 py-5 my-5 text-center">
-    <h1 class="display-5 fw-bold">Сайт учителей</h1>
-    <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Сайт предназначенный для удобного размещения тем от учителей для учеников.</p>
-        <div class="d-grid gap-1 d-sm-flex justify-content-sm-center">
-            <a asp-area="" asp-controller="Home" asp-action="Contacts"><button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Связаться с нами</button></a>
-            <a href="/topic/add/"><button type="button" class="btn btn-outline-secondary btn-lg px-4">Добавить статью</button></a>
-        </div>
-    </div>
-</div>
-
 <div class="container">
+    <form>
+        <center>
+            <div class="form-row align-items-center">
+                <h4>Поиск по названию</h4>
+                <div class="col-auto">
+                    <input type="search" class="custom-search form-control mb-2 col-xs-" name="pattern" placeholder="Введие название темы">
+                    <button type="submit" class="btn btn-primary mb-2">Поиск</button>
+                </div>
+            </div>
+        </center>
+    </form>
+
+    <br />
+    <br />
+
     <div class="row">
-        @foreach (var topic in db.LessonTopics.Take(9)) {
+        @foreach (var topic in topics) {
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
                     <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="@topic.PictureUrl" data-holder-rendered="true">
@@ -37,3 +40,15 @@
         }
     </div>
 </div>
+
+<style>
+    .btn, .custom-search {
+        width: 100%;
+        max-width: 400px;
+    }
+</style>
+
+@*<form action="" method="get">
+    <input type="search" name="pattern" />
+    <button type="submit">Найти</button>
+</form>*@

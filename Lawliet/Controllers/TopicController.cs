@@ -46,5 +46,19 @@ namespace Lawliet.Controllers {
             await _cachingService.AddObjectFromCache(topic);
             return RedirectToAction("Index", "Home");
         }
+
+
+        [HttpGet]
+        public IActionResult Search(string pattern) {
+            DataRepository<LessonTopic> repository = new DataRepository<LessonTopic>(_context);
+
+            var allTopics = repository.GetAll();
+            if (string.IsNullOrEmpty(pattern)) {
+                return View(allTopics);
+            }
+
+            var filteredTopics = allTopics.Where(x => x.ShortTitle!.ToLower().Contains(pattern.ToLower()));
+            return View(filteredTopics);
+        }
     }
 }
